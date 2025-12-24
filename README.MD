@@ -171,7 +171,30 @@ This phase ensures all subsequent failures are intentional and attributable to c
 
 ### Phase 4 – Transport Layer (TCP/UDP)
 
-**Status:** Planned
+**Objective:** Demonstrate how transport-layer controls can disrupt application communication even when physical connectivity, ARP resolution, and IP routing remain fully functional.
+
+**Actions Performed:**
+1. Verified baseline transport-layer connectivity via ICMP and successful HTTPS requests over TCP/443
+2. Applied iptables rule to drop outbound TCP traffic on port 443 while leaving ICMP unaffected
+3. Observed HTTPS failures despite valid routing and ARP state
+4. Confirmed failure isolated strictly to TCP port enforcement
+5. Removed blocking rule and validated full HTTPS restoration
+
+**Key Observations:**
+- ICMP success does not guarantee application availability
+- Transport-layer controls can silently block applications while lower layers appear healthy
+- Port-level filtering is a frequent root cause in real-world outages and security incidents
+
+**OSI Mapping:**
+- **Layer 1:** Physical link (verified healthy)
+- **Layer 2:** ARP/MAC resolution (verified healthy)
+- **Layer 3:** IP routing (verified healthy)
+- **Layer 4:** TCP/UDP port handling (failure source)
+- **Layer 7:** HTTPS application traffic (impacted downstream)
+
+**Outcome:** Successfully demonstrated a realistic transport layer failure and recovery scenario that mirrors enterprise firewall misconfigurations, endpoint security policies, and cloud security group behavior.
+
+**What This Proves:** Network reachability at Layer 3 does not guarantee application connectivity; transport-layer enforcement operates independently of routing.
 
 ---
 
