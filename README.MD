@@ -27,6 +27,31 @@ Failures are intentionally introduced on a Linux system and observed from a Wind
 - Phase 5: Layer 7 (Application)
 - Phase 7: Post-remediation validation
 
+### Phase 2 – Data Link Layer (ARP / MAC Resolution)
+
+**Objective:**  
+Demonstrate how incorrect ARP/MAC mappings at OSI Layer 2 can break connectivity even when IP configuration and routing appear correct.
+
+**Actions Performed:**
+- Observed baseline ARP neighbor table with valid gateway resolution
+- Introduced an intentional ARP/MAC mismatch using a static neighbor entry
+- Verified complete packet loss despite correct IP address and default gateway
+- Confirmed failure persisted across ICMP targets
+- Restored connectivity by removing the poisoned ARP entry
+
+**Key Observations:**
+- Layer 3 (IP) configuration remained valid throughout the failure
+- Traffic failed due to incorrect Layer 2 address resolution
+- ARP cache manipulation alone was sufficient to fully disrupt network access
+
+**OSI Mapping:**
+- Layer 2: ARP / MAC address resolution (failure source)
+- Layer 3: IP routing (confirmed healthy)
+- Layer 7: Application reachability impacted as a downstream effect
+
+**Outcome:**  
+Successfully demonstrated a realistic Layer 2 failure scenario and recovery workflow commonly encountered in enterprise troubleshooting and security analysis.
+
 ## Evidence
 All screenshots are organized by phase under the `screenshots/` directory.
 
