@@ -142,7 +142,30 @@ This phase ensures all subsequent failures are intentional and attributable to c
 
 ### Phase 3 – Network Layer (IP Routing)
 
-**Status:** In Progress
+**Objective:** Demonstrate how incorrect Layer 3 routing breaks external connectivity even when Layer 1 and Layer 2 remain fully functional.
+
+**Actions Performed:**
+1. Validated baseline routing state with correct default gateway (192.168.22.2)
+2. Introduced intentional routing failure by replacing valid gateway with invalid target (192.168.22.99)
+3. Verified local gateway remained reachable while external traffic failed
+4. Confirmed ARP table remained healthy throughout the failure
+5. Restored correct routing and validated full connectivity recovery
+
+**Key Observations:**
+- Layer 3 failures do not necessarily impact Layer 2
+- ARP resolution can remain healthy while traffic still fails
+- Incorrect routing manifests as external reachability loss, not link failure
+- Symptoms can appear "network-wide" while the root cause is a single route
+
+**OSI Mapping:**
+- **Layer 1:** Physical link (verified healthy)
+- **Layer 2:** ARP/MAC resolution (verified healthy)
+- **Layer 3:** IP routing (failure source)
+- **Layer 7:** Application reachability (impacted downstream)
+
+**Outcome:** Successfully demonstrated a realistic Layer 3 routing failure and recovery scenario commonly encountered during misconfigured gateways, VPN split-tunnel issues, cloud route table errors, and on-premises network changes.
+
+**What This Proves:** Lower-layer health does not guarantee higher-layer functionality; routing failures occur independently of link and MAC layer operations.
 
 ---
 
