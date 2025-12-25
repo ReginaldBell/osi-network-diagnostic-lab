@@ -1,3 +1,4 @@
+
 # OSI-Based Network & System Diagnostic Lab
 ## Production-Grade Troubleshooting Methodology
 
@@ -15,109 +16,151 @@
 
 ---
 
-## 🎯 Business Impact & Professional Alignment
+## 🎯 Executive Value Proposition
 
-This lab demonstrates **production-grade troubleshooting methodology** directly applicable to:
+I isolate complex network and security failures using the same evidence-driven, OSI-layer methodology employed by SOC Tier 2/3, NOC, and SRE teams in production environments.
 
-### **Enterprise Scenarios**
-- **SOC Tier 2/3 Escalation:** Multi-layer failure isolation under time constraints
-- **NOC Operations:** Evidence-based diagnostics with strict change control
-- **SRE Incident Response:** Root cause analysis with minimal-scope remediation
-- **Zero-Trust Architecture:** Transport and presentation layer security verification
-- **Cloud Network Debugging:** AWS/Azure security group, route table, and certificate failures
+This lab intentionally injects failures across the OSI stack and restores service using:
 
-### **Quantified Skills Demonstrated**
-- ✅ Reduced MTTR through systematic OSI isolation
-- ✅ Prevented scope creep via strict layer-locking
-- ✅ Minimized blast radius through single-variable changes
-- ✅ Produced audit-ready evidence chains with timestamps
-- ✅ Applied defense-in-depth validation across all layers
+- **Layer-by-layer isolation** (no guesswork)
+- **Audit-ready evidence** (timestamps, command output, artifacts)
+- **Minimal blast radius remediation** (single-variable changes only)
+
+**Outcome:** Each failure is isolated to a single OSI layer, remediated with minimal blast radius, and validated end-to-end using repeatable evidence.
+
+This lab is a controlled incident-response simulation designed to mirror real on-call troubleshooting workflows used by SOC, NOC, and SRE teams.
 
 ---
 
-## 🏗️ OSI Layer Reference & Failure Domains
+## ✅ What This Project Proves
 
-| Layer | Name | Protocols/Technologies | Common Real-World Failures |
-|-------|------|------------------------|----------------------------|
-| **7** | Application | HTTP, DNS, SSH, FTP | Service misconfiguration, authentication failures, DNS poisoning |
-| **6** | Presentation | SSL/TLS, certificates, encryption | Expired certificates, cipher mismatch, encoding errors |
-| **5** | Session | NetBIOS, RPC, session state | Session timeouts, state corruption, abandoned connections |
-| **4** | Transport | TCP, UDP, port control | Firewall blocks, security group misconfig, port exhaustion |
-| **3** | Network | IP, ICMP, routing | Wrong gateway, route propagation failure, IP conflicts |
-| **2** | Data Link | Ethernet, ARP, MAC, switches | ARP poisoning, MAC table overflow, VLAN mismatch |
-| **1** | Physical | Cables, NICs, link state | Interface down, cable fault, duplex mismatch |
+- Diagnose outages systematically, not reactively
+- Validate lower layers before higher layers
+- Collect packet captures, command output, and service-state evidence before proposing fixes
+- Apply change-controlled, minimal-scope remediation
+- Distinguish service health vs transport security
+- Reason in root cause attribution, not symptoms
 
 ---
 
-## 🔬 Lab Environment
+## 🏗️ Lab Architecture (High-Level)
 
-| Component | Specification | Purpose |
-|-----------|---------------|---------|
-| **Hypervisor** | VMware Workstation 17 | Controlled, reproducible environment |
-| **Linux Host** | Ubuntu Server 24.04 LTS | Diagnostic client + fault injection target |
-| **Windows Host** | Windows Server 2022 | IIS web server + TLS endpoint |
-| **Network Mode** | NAT (192.168.22.0/24) | Stable baseline with external connectivity |
-| **Methodology** | Phase-locked OSI isolation | One layer, one variable, one change at a time |
+| Component         | Platform                | Purpose                                   | Trust Boundary      |
+|-------------------|------------------------|-------------------------------------------|---------------------|
+| Diagnostic Host   | Ubuntu 24.04 LTS       | Client-side testing, packet capture, evidence collection | Untrusted client    |
+| Target Service    | Windows Server 2022 (IIS) | HTTPS, DNS, application-layer failure injection | Trusted service     |
+| Network Fabric    | VMware NAT (192.168.22.0/24) | Isolated, reproducible network           | Controlled perimeter|
 
-### **Design Rationale**
-- Linux provides fine-grained network control for precise fault injection
-- Windows represents realistic enterprise endpoints and services
-- NAT provides reproducible baseline without infrastructure dependencies
-- Phase-locking prevents diagnostic ambiguity and false conclusions
+**Design Rationale:**
+- Linux provides low-level, deterministic diagnostics (tcpdump, openssl, ip, iptables)
+- Windows mirrors real enterprise service endpoints
+- NAT ensures a stable baseline with no external dependencies
+- Phase locking prevents cross-layer ambiguity
 
 ---
 
-## 📐 OSI Dependency Visualization
+## 🧠 OSI Phase Model & Real-World Analogs
 
-```
-┌─────────────────────────────────────────────────────────────┐
-│  Layer 7: APPLICATION                                       │
-│  ├─ HTTP/HTTPS, DNS, SSH                                    │
-│  └─ Depends on: Session, Presentation, Transport            │
-└─────────────────────────────────────────────────────────────┘
-                          ▼
-┌─────────────────────────────────────────────────────────────┐
-│  Layer 6: PRESENTATION                                      │
-│  ├─ TLS/SSL, Certificates, Encoding                         │
-│  └─ Depends on: Transport                                   │
-└─────────────────────────────────────────────────────────────┘
-                          ▼
-┌─────────────────────────────────────────────────────────────┐
-│  Layer 5: SESSION                                           │
-│  ├─ Connection State, Session Management                    │
-│  └─ Depends on: Transport                                   │
-└─────────────────────────────────────────────────────────────┘
-                          ▼
-┌─────────────────────────────────────────────────────────────┐
-│  Layer 4: TRANSPORT                                         │
-│  ├─ TCP/UDP, Port Control                                   │
-│  └─ Depends on: Network                                     │
-└─────────────────────────────────────────────────────────────┘
-                          ▼
-┌─────────────────────────────────────────────────────────────┐
-│  Layer 3: NETWORK                                           │
-│  ├─ IP Routing, ICMP                                        │
-│  └─ Depends on: Data Link                                   │
-└─────────────────────────────────────────────────────────────┘
-                          ▼
-┌─────────────────────────────────────────────────────────────┐
-│  Layer 2: DATA LINK                                         │
-│  ├─ ARP, MAC Addressing, Switching                          │
-│  └─ Depends on: Physical                                    │
-└─────────────────────────────────────────────────────────────┘
-                          ▼
-┌─────────────────────────────────────────────────────────────┐
-│  Layer 1: PHYSICAL                                          │
-│  ├─ Link State, NIC Status                                  │
-│  └─ Foundation for all upper layers                         │
-└─────────────────────────────────────────────────────────────┘
+Each phase is locked. Lower layers must be validated before progressing upward.
 
-💡 KEY INSIGHT:
-   Failure at ANY layer breaks all dependent layers above it.
-   Success at Layer 3 does NOT guarantee Layer 7 functionality.
+| Phase | OSI Layer    | Failure Injected      | Primary Diagnostic Signal | Real-World Analog         |
+|-------|--------------|----------------------|--------------------------|---------------------------|
+| 0     | Baseline     | None                 | Known-good validation    | Production sanity check   |
+| 1     | Physical     | Interface disabled   | ip link down             | Cable / SFP failure       |
+| 2     | Data Link    | ARP poisoning        | arp -an MAC mismatch     | Switch MAC corruption     |
+| 3     | Network      | Invalid gateway      | ip route, traceroute     | Route propagation error   |
+| 4     | Transport    | TCP/443 blocked      | SYN timeout / RST        | Firewall / Security Group |
+| 5     | Application  | DNS resolution failure | SERVFAIL / NXDOMAIN    | Route 53 / Azure DNS      |
+| 6     | Presentation | TLS binding removed  | openssl s_client failure | ALB / App Service TLS     |
+| 7     | Validation   | End-to-end verification | Full request success  | SLA confirmation          |
+
+**Key Insight:**
+Success at Layer 3 does not guarantee functionality at Layer 7.
+
+Phase 7 intentionally injects no failures and exists solely to confirm post-remediation stability and security posture.
+
+---
+
+> **OSI dependency flow and failure propagation are documented in [notes/osi-reference.md](notes/osi-reference.md).**
+
+---
+
+## 🚀 Quickstart: Reproduce a Real TLS Failure (Layer 6)
+
+This example demonstrates a common production outage: the service is running, but secure transport is broken.
+
+**Inject (Windows Server):**
+- Remove the HTTPS binding in IIS
+- Leave the IIS service running
+
+**Diagnose (Linux):**
+```sh
+openssl s_client -connect 192.168.22.131:443
 ```
 
+**Analyze:**
+- ICMP & routing succeed → Layers 1–3 healthy
+- TCP reachable (or previously reachable) → Layer 4 verified
+- TLS handshake fails → Layer 6 isolated
+
+**Remediate (Correct Fix):**
+- Restore the HTTPS binding in IIS with a valid certificate
+
+**Validate TLS handshake:**
+```sh
+openssl s_client -connect 192.168.22.131:443
+```
+
+**Validate:**
+```sh
+curl https://192.168.22.131
+```
+
+> Note: `-k` was used earlier only to observe certificate trust behavior, not to validate remediation success.
+
 ---
+
+## 🔍 Methodology Guarantees
+
+- **Phase Locking:** No out-of-order fixes
+- **Single-Variable Changes:** One action per iteration
+- **Evidence-First Reasoning:** No assumptions
+- **Confidence Levels:** High / Medium / Low per root cause
+- **Audit Readiness:** Before/after validation for every fix
+
+---
+
+## 📂 Repository Navigation
+
+osi-diagnostic-lab/
+├── README.md                     # Executive overview
+├── issues/                       # Phase-by-phase RCAs & remediation
+│   ├── phase-05-dns-resolution-failure/
+│   ├── phase-06-https-session-establishment/
+│   └── phase-07-validation/
+├── screenshots/                  # Visual proof of failure & recovery
+├── notes/                        # OSI tables & diagnostic references
+├── interview/                    # STAR interview narratives
+
+> Deep command output, logs, and screenshots intentionally live outside the README to preserve clarity.
+
+---
+
+## 🧪 Skills Demonstrated
+
+| Skill                | How It’s Proven                                 |
+|----------------------|-------------------------------------------------|
+| OSI Isolation        | Strict layer validation, no cross-layer fixes    |
+| Root Cause Analysis  | Evidence-backed conclusions with confidence     |
+| Change Control       | Single-variable remediation only                |
+| Failure Containment  | Service degradation isolated without collateral impact |
+| Incident Documentation | Timestamped logs, screenshots, tables         |
+| Transport Security   | TLS handshake failure isolation                 |
+| Production Thinking  | MTTR tracking, blast-radius minimization        |
+
+---
+
+> STAR-formatted interview narratives are included under [interview/](interview/).
 
 ## 📋 Enhanced Phase Summary Table
 
